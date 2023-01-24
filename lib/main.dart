@@ -1,5 +1,5 @@
 import 'package:bloctest/logic/bloc/product_bloc/product_bloc.dart';
-import 'package:bloctest/presentation/screens/home_screen.dart';
+import 'package:bloctest/presentation/widgets/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const HomePage()
+          home: const MyHomepage()
           // MultiBlocProvider(
           //   providers: [
           //     BlocProvider<ProductBloc>(

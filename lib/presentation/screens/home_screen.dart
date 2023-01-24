@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 233, 231, 231),
+        backgroundColor: const Color.fromARGB(255, 246, 230, 230),
         body: Column(children: [
           //heder part
           Container(
@@ -72,9 +72,15 @@ class _HomePageState extends State<HomePage> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        PopularProduct(products: state.data),
+                        BlocProvider.value(
+                          value: BlocProvider.of<ProductBloc>(context),
+                          child: PopularProduct(products: state.data),
+                        ),
                         const SizedBox(height: 20),
-                        RecommendedProducts(products: state.data)
+                        BlocProvider.value(
+                          value: BlocProvider.of<ProductBloc>(context),
+                          child: RecommendedProducts(products: state.data),
+                        ),
                       ],
                     ),
                   ),

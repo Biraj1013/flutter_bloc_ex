@@ -1,10 +1,8 @@
 import 'package:bloctest/presentation/screens/products_details_screen.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/model/product_model.dart';
-import '../../logic/bloc/cart_bloc/cart_bloc.dart';
 import '../widgets/fonts/big_text.dart';
 import '../widgets/fonts/grey_text.dart';
 import '../widgets/icons_row.dart';
@@ -125,12 +123,10 @@ class _PopularProductState extends State<PopularProduct> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => (BlocProvider(
-                        create: (context) => CartBloc(),
-                        child: PopularproductDetails(
-                          pageId: index,
-                        ),
-                      ))));
+                builder: (context) => PopularproductDetails(
+                  pageId: index,
+                ),
+              ));
           // Get.toNamed(
           //   RouterHelper.getPopularProductDetails(index),
           // curve: Curves.easeInOut,

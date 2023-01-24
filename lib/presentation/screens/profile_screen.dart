@@ -14,7 +14,7 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 246, 230, 230),
       body: Column(
         children: [
           const Center(

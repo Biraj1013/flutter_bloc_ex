@@ -9,33 +9,30 @@ import '../../../data/model/product_model.dart';
 class CartBloc extends Bloc<CartEvent, CartState> {
   int _quantity = 0;
   int get quantity => _quantity;
-  final int _inCartItems = 0;
+  int _inCartItems = 0;
   int get inCartItems => _inCartItems + _quantity;
+
   final Map<int, ProductModel> _items = {};
   Map<int, ProductModel> get items => _items;
 
   CartBloc() : super(CartInitialState()) {
-    // on<ItemIncrementEvent>((event, emit) {
-    //   int quntity = 0;
-    //   emit(ItemIncrementState(quntity + 1));
-    // });
-    // on<ItemDecrementEvent>((event, emit) {
-    //   int quntity = 0;
-    //   emit(ItemDecrementState(quntity - 1));
-    // });
     on<IsIncrementEvent>((event, emit) {
       setQuantity(event.increment);
-      emit(IsIncrementState(inCartItems));
+      emit(IsIncrementState(_quantity));
     });
     on<ItemAddToCartEvent>((event, emit) {
-      addItem(event.product, quantity);
+      addItem(event.product, _quantity);
       log(items.toString());
+      _inCartItems = getQuantity(event.product);
       emit(ItemAddToCartState(
-          getItems, getQuantity(event.product), totalItems, totalAmount));
+          getItems, _inCartItems, totalItems, double.parse(totalAmount)));
     });
-    // on<ItemAddedtoCartEvent>((event, emit) {
-    //   emit(ItemAddedToCartState(getItems, totalAmount));
-    // });
+    on<ItemAddedToCartEvent>((event, emit) {
+      addItem(event.product, event.quantity);
+      log(items.toString());
+      emit(ItemAddedToCartState(getItems, getQuantity(event.product),
+          totalItems, double.parse(totalAmount)));
+    });
   }
 
   void setQuantity(bool isIncrement) {
@@ -47,16 +44,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   }
 
   int checkQuantity(int quantity) {
-    log('quantity : $quantity');
     if ((_inCartItems + quantity) < 0) {
       if (_inCartItems > 0) {
         _quantity = -_inCartItems;
-        log('quantity : $_inCartItems');
         return _quantity;
       }
       return 0;
     } else if ((_inCartItems + quantity) > 20) {
-      log('quantity : $_inCartItems');
       return 20;
     } else {
       return quantity;
@@ -66,8 +60,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   void addItem(ProductModel product, int quantity) {
     var totalQuantity = 0;
     if (_items.containsKey(product.id!)) {
+      log(quantity.toString());
+      log("updated");
       _items.update(product.id!, (value) {
-        totalQuantity = quantity;
+        totalQuantity = quantity + value.quantity!;
         return ProductModel(
           id: value.id,
           name: value.name,
@@ -81,6 +77,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       }
     } else {
       if (quantity > 0) {
+        log("put is absent");
         _items.putIfAbsent(product.id!, () {
           return ProductModel(
             id: product.id,
@@ -99,10 +96,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     if (_items.containsKey(product.id)) {
       _items.forEach((key, value) {
         if (key == product.id) {
+          log("value quantity ${value.quantity}");
           quantity = value.quantity!;
         }
       });
     }
+    log("getQuantitty : $quantity");
     return quantity;
   }
 
@@ -120,11 +119,11 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }).toList();
   }
 
-  double get totalAmount {
+  String get totalAmount {
     double total = 0.0;
     _items.forEach((key, value) {
       total += (value.quantity! * double.parse(value.price!));
     });
-    return total;
+    return total.toStringAsFixed(2);
   }
 }

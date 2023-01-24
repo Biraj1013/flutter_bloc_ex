@@ -1,8 +1,6 @@
 import 'package:bloctest/presentation/screens/products_details_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/model/product_model.dart';
-import '../../logic/bloc/cart_bloc/cart_bloc.dart';
 import '../widgets/fonts/big_text.dart';
 import '../widgets/fonts/grey_text.dart';
 import '../widgets/icons_row.dart';
@@ -65,12 +63,10 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (_) => (BlocProvider(
-                                    create: (context) => CartBloc(),
-                                    child: PopularproductDetails(
-                                      pageId: index + 6,
-                                    ),
-                                  ))));
+                            builder: (context) => PopularproductDetails(
+                              pageId: index + 6,
+                            ),
+                          ));
                     },
                     child: Row(
                       children: [
@@ -92,8 +88,8 @@ class _RecommendedProductsState extends State<RecommendedProducts> {
                               height: 100,
                               decoration: const BoxDecoration(
                                   borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(20),
-                                      bottomRight: Radius.circular(20)),
+                                      topRight: Radius.circular(15),
+                                      bottomRight: Radius.circular(15)),
                                   color: Colors.white),
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 8, left: 8),
