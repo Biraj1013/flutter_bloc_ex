@@ -18,10 +18,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   CartBloc() : super(CartInitialState()) {
     on<IsIncrementEvent>((event, emit) {
       setQuantity(event.increment);
-      emit(IsIncrementState(_quantity));
+      _inCartItems = getQuantity(event.products);
+      emit(IsIncrementState(quantity));
     });
     on<ItemAddToCartEvent>((event, emit) {
       addItem(event.product, _quantity);
+      _quantity = 0;
       log(items.toString());
       _inCartItems = getQuantity(event.product);
       emit(ItemAddToCartState(

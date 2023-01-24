@@ -95,7 +95,7 @@ class _CartPageState extends State<CartPage> {
               topRight: Radius.circular(20),
               topLeft: Radius.circular(20),
             ),
-            color: Colors.grey[200],
+            color: Colors.grey[400],
           ),
           child: Padding(
             padding: const EdgeInsets.only(left: 30, right: 30),
